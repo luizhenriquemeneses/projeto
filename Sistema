@@ -1,0 +1,980 @@
+#CONEXÃO
+package connection;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Bean.CursosBEAN;
+
+public class ConnectionFactory {
+    private static final String DRIVER = "net.sourceforge.jtds.jdbc.Driver";
+    private static final String URL = "jdbc:jtds:sqlserver://100296EL-PC:1433/GERENCIADOR_P";
+    private static final String USER = "dba";
+    private static final String PASS = "123";
+    
+    
+   public static Connection getConnection(){
+        try {
+            Class.forName(DRIVER);            
+                return DriverManager.getConnection(URL,USER,PASS);
+            } catch (ClassNotFoundException | SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Erro ao conectar!");
+                throw new RuntimeException("Erro de conexão: "+ex);
+            }               
+   }
+   
+    public static void closeConnection(Connection con){
+        try {
+        if(con != null){
+                con.close();
+        }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Erro 1"+ex);
+            }
+        }
+    
+    public static void closeConnection(Connection con,PreparedStatement stnt){
+        closeConnection(con);
+        try {       
+            if(stnt != null){
+                stnt.close();
+            }
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null,"Erro 2"+ex);
+            }
+        }
+    
+    
+    public static void closeConnection(Connection con,PreparedStatement stnt,ResultSet rs){
+        
+        closeConnection(con,stnt);
+        try {
+        if(rs != null){
+                rs.close();
+        }
+            } catch (SQLException ex) {
+               JOptionPane.showMessageDialog(null,"Erro 3"+ex);
+            }
+        }
+    
+}
+
+#BEANS
+
+package model.Bean;
+
+public class CursosBEAN {
+    
+   private int idcurso;
+   private int idfunc;
+   private String nome_func;
+   private String nome_curso;
+   private String descricao;
+   private String requisitos;
+
+    public int getIdcurso() {
+        return idcurso;
+    }
+
+    public void setIdcurso(int idcurso) {
+        this.idcurso = idcurso;
+    }
+
+    public int getIdfunc() {
+        return idfunc;
+    }
+
+    public void setIdfunc(int idfunc) {
+        this.idfunc = idfunc;
+    }
+
+    public String getNome_func() {
+        return nome_func;
+    }
+
+    public void setNome_func(String nome_func) {
+        this.nome_func = nome_func;
+    }
+
+    public String getNome_curso() {
+        return nome_curso;
+    }
+
+    public void setNome_curso(String nome_curso) {
+        this.nome_curso = nome_curso;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public String getRequisitos() {
+        return requisitos;
+    }
+
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+    
+    
+    
+
+    
+    
+}
+
+
+package model.Bean;
+
+
+
+public class DisciplinasBEAN {
+   private int iddisc;
+   private int idcurso;
+   private String curso;
+   private String nome_disc;
+   private String requisitos;
+   private String descricao;
+   private Float valor;
+
+    public int getIddisc() {
+        return iddisc;
+    }
+
+    public void setIddisc(int iddisc) {
+        this.iddisc = iddisc;
+    }
+
+    public int getIdcurso() {
+        return idcurso;
+    }
+
+    public void setIdcurso(int idcurso) {
+        this.idcurso = idcurso;
+    }
+
+    public String getCurso() {
+        return curso;
+    }
+
+    public void setCurso(String curso) {
+        this.curso = curso;
+    }
+
+    public String getNome_disc() {
+        return nome_disc;
+    }
+
+    public void setNome_disc(String nome_disc) {
+        this.nome_disc = nome_disc;
+    }
+
+    public String getRequisitos() {
+        return requisitos;
+    }
+
+    public void setRequisitos(String requisitos) {
+        this.requisitos = requisitos;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Float getValor() {
+        return valor;
+    }
+
+    public void setValor(Float valor) {
+        this.valor = valor;
+    }
+    
+    
+    
+
+}
+
+
+
+package model.Bean;
+
+
+public class TurmaBEAN {
+    
+    private int idturma;
+    private int idmatricula;
+    private String data_matricula;
+    private int idaluno;
+    private String nome_aluno;
+    private int idcurso;
+    private String nome_curso;       
+    private int iddisc1;
+    private int iddisc2;
+    private int iddisc3;
+    private int iddisc4;
+    private int iddisc5;
+    private String disciplina1;
+    private String disciplina2;
+    private String disciplina3;
+    private String disciplina4;
+    private String disciplina5;
+    private String horarios;
+    private int limitevagas;
+
+    public int getIdturma() {
+        return idturma;
+    }
+
+    public void setIdturma(int idturma) {
+        this.idturma = idturma;
+    }
+
+    public int getIdmatricula() {
+        return idmatricula;
+    }
+
+    public void setIdmatricula(int idmatricula) {
+        this.idmatricula = idmatricula;
+    }
+
+    public String getData_matricula() {
+        return data_matricula;
+    }
+
+    public void setData_matricula(String data_matricula) {
+        this.data_matricula = data_matricula;
+    }
+
+    public int getIdaluno() {
+        return idaluno;
+    }
+
+    public void setIdaluno(int idaluno) {
+        this.idaluno = idaluno;
+    }
+
+    public String getNome_aluno() {
+        return nome_aluno;
+    }
+
+    public void setNome_aluno(String nome_aluno) {
+        this.nome_aluno = nome_aluno;
+    }
+
+    public int getIdcurso() {
+        return idcurso;
+    }
+
+    public void setIdcurso(int idcurso) {
+        this.idcurso = idcurso;
+    }
+
+    public String getNome_curso() {
+        return nome_curso;
+    }
+
+    public void setNome_curso(String nome_curso) {
+        this.nome_curso = nome_curso;
+    }
+
+    public int getIddisc1() {
+        return iddisc1;
+    }
+
+    public void setIddisc1(int iddisc1) {
+        this.iddisc1 = iddisc1;
+    }
+
+    public int getIddisc2() {
+        return iddisc2;
+    }
+
+    public void setIddisc2(int iddisc2) {
+        this.iddisc2 = iddisc2;
+    }
+
+    public int getIddisc3() {
+        return iddisc3;
+    }
+
+    public void setIddisc3(int iddisc3) {
+        this.iddisc3 = iddisc3;
+    }
+
+    public int getIddisc4() {
+        return iddisc4;
+    }
+
+    public void setIddisc4(int iddisc4) {
+        this.iddisc4 = iddisc4;
+    }
+
+    public int getIddisc5() {
+        return iddisc5;
+    }
+
+    public void setIddisc5(int iddisc5) {
+        this.iddisc5 = iddisc5;
+    }
+
+    public String getDisciplina1() {
+        return disciplina1;
+    }
+
+    public void setDisciplina1(String disciplina1) {
+        this.disciplina1 = disciplina1;
+    }
+
+    public String getDisciplina2() {
+        return disciplina2;
+    }
+
+    public void setDisciplina2(String disciplina2) {
+        this.disciplina2 = disciplina2;
+    }
+
+    public String getDisciplina3() {
+        return disciplina3;
+    }
+
+    public void setDisciplina3(String disciplina3) {
+        this.disciplina3 = disciplina3;
+    }
+
+    public String getDisciplina4() {
+        return disciplina4;
+    }
+
+    public void setDisciplina4(String discplina4) {
+        this.disciplina4 = discplina4;
+    }
+
+    public String getDisciplina5() {
+        return disciplina5;
+    }
+
+    public void setDisciplina5(String disciplina5) {
+        this.disciplina5 = disciplina5;
+    }
+
+    public String getHorarios() {
+        return horarios;
+    }
+
+    public void setHorarios(String horarios) {
+        this.horarios = horarios;
+    }
+
+    public int getLimitevagas() {
+        return limitevagas;
+    }
+
+    public void setLimitevagas(int limitevagas) {
+        this.limitevagas = limitevagas;
+    }
+ 
+    
+}
+
+#DAO
+package model.dao;
+
+import connection.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Bean.CursosBEAN;
+
+public class CursoDAO {
+    ConnectionFactory con;
+    public boolean create(CursosBEAN a)throws Exception{
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        
+        try {
+            stnt = con.prepareStatement("INSERT INTO Cursos VALUES(?,?,?,?,?,?)");
+            stnt.setInt(1,a.getIdcurso());
+            stnt.setInt(2,a.getIdfunc());
+            stnt.setString(3,a.getNome_func());
+            stnt.setString(4,a.getNome_curso());
+            stnt.setString(5,a.getDescricao());
+            stnt.setString(6,a.getRequisitos());
+            
+            stnt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null,"Salvo com sucesso!");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao Salvar!"+ex);
+        }finally{
+        ConnectionFactory.closeConnection(con,stnt);
+    }
+        if(stnt.executeUpdate()>0)
+           return true;
+           else
+           return false;
+    }
+    
+     public CursosBEAN Pesquisar(String nome) throws Exception{
+       con = new ConnectionFactory();
+       
+       CursosBEAN objCurso = null;
+       String SQL = "select * from Cursos where Nome_curso LIKE %nome_curso%";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setString(1,"%"+nome+"%");
+       ResultSet rs = ps.executeQuery();
+       while(rs.next()){
+           objCurso = new CursosBEAN();
+           
+            objCurso.setIdcurso(rs.getInt("idcurso"));
+            objCurso.setIdfunc(rs.getInt("idfunc"));
+            objCurso.setNome_func(rs.getString("nome_func"));
+            objCurso.setNome_curso(rs.getString("nome_curso"));
+            objCurso.setDescricao(rs.getString("descricao"));
+            objCurso.setRequisitos(rs.getString("requisitos"));
+            objCurso.setNome_curso(rs.getString("Nome_curso"));
+            
+           
+       }
+       return objCurso;
+   }
+   
+   
+   public boolean Editar(CursosBEAN objCurso) throws Exception{
+       con = new ConnectionFactory();
+       String SQL = "update Cursos set idcurso = ?, id_func = ?, nome_func = ?, nome_curso = ?,descicao = ?, requisitos = ?";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       
+            ps.setInt(1,objCurso.getIdcurso());
+            ps.setInt(2,objCurso.getIdfunc());
+            ps.setString(3,objCurso.getNome_func());
+            ps.setString(4,objCurso.getNome_curso());
+            ps.setString(5,objCurso.getDescricao());
+            ps.setString(6,objCurso.getRequisitos());
+      
+       
+       if(ps.executeUpdate()>0)
+           return true;
+           else
+           return false;
+   }
+   public boolean Excluir(int id_curso)throws Exception{
+       con = new ConnectionFactory();
+       String SQL = "delete from Cursos where idcurso = ?";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setInt(1, id_curso);
+       if(ps.executeUpdate()>0)
+           return true;
+           else
+           return false;
+   
+
+   }
+   public List<CursosBEAN> read(){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        ResultSet rs = null;
+        
+        List<CursosBEAN> cursos = new ArrayList<CursosBEAN>();
+        
+        try {
+            stnt = con.prepareStatement("select*from Cursos");
+            rs = stnt.executeQuery();
+            
+            while(rs.next()){
+                
+                CursosBEAN curso = new CursosBEAN();
+                
+            curso.setIdcurso(rs.getInt("idcurso"));
+            curso.setIdfunc(rs.getInt("idfunc"));
+            curso.setNome_func(rs.getString("nome_func"));
+            curso.setNome_curso(rs.getString("nome_curso"));
+            curso.setDescricao(rs.getString("descricao"));
+            curso.setRequisitos(rs.getString("requisitos"));
+            curso.setNome_curso(rs.getString("Nome_curso"));
+                
+               
+                
+                cursos.add(curso);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stnt, rs);
+        }
+        
+        return cursos;
+    }
+   
+   public List<CursosBEAN> readBuscar(String nome){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        ResultSet rs = null;
+        
+        List<CursosBEAN> cursos = new ArrayList<CursosBEAN>();
+        
+        try {
+            stnt = con.prepareStatement("select*from Cursos where Nome_curso LIKE ?");
+            stnt.setString(1,"%"+nome+"%");
+            rs = stnt.executeQuery();
+            
+            while(rs.next()){
+                
+                CursosBEAN curso = new CursosBEAN();
+                
+            curso.setIdcurso(rs.getInt("idcurso"));
+            curso.setIdfunc(rs.getInt("idfunc"));
+            curso.setNome_func(rs.getString("nome_func"));
+            curso.setNome_curso(rs.getString("nome_curso"));
+            curso.setDescricao(rs.getString("descricao"));
+            curso.setRequisitos(rs.getString("requisitos"));
+            curso.setNome_curso(rs.getString("Nome_curso"));
+                
+                
+                
+                cursos.add(curso);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stnt, rs);
+        }
+        
+        return cursos;
+    }
+   
+}
+
+package model.dao;
+
+import connection.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Bean.DisciplinasBEAN;
+
+public class DisciplinaDAO {
+    ConnectionFactory con;
+    public boolean create(DisciplinasBEAN a)throws Exception{
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        
+        try {
+            stnt = con.prepareStatement("INSERT INTO Disciplinas VALUES(?,?,?,?,?,?,?)");
+            
+            
+            stnt.setInt(1,a.getIddisc());
+            stnt.setInt(2,a.getIdcurso());
+            stnt.setString(3,a.getCurso());
+            stnt.setString(4,a.getNome_disc());
+            stnt.setString(5,a.getRequisitos());
+            stnt.setString(6,a.getDescricao());
+            stnt.setFloat(7,a.getValor());
+            
+           
+            stnt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null,"Salvo com sucesso!");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao Salvar!"+ex);
+        }finally{
+        ConnectionFactory.closeConnection(con,stnt);
+    }
+        if(stnt.executeUpdate()>0)
+           return true;
+           else
+           return false;
+    }
+    
+     public DisciplinasBEAN Pesquisar(String nome) throws Exception{
+       con = new ConnectionFactory();
+       
+       DisciplinasBEAN objDisc = null;
+       String SQL = "select * from Disciplinas where nome LIKE %nome_disc%";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setString(1,"%"+nome+"%");
+       ResultSet rs = ps.executeQuery();
+       while(rs.next()){
+           
+           objDisc = new DisciplinasBEAN();
+           
+           objDisc.setIddisc(rs.getInt("iddisc"));
+           objDisc.setIdcurso(rs.getInt("idcurso"));
+           objDisc.setCurso(rs.getString("curso"));
+           objDisc.setNome_disc(rs.getString("nome_disc"));
+           objDisc.setRequisitos(rs.getString("requisitos"));
+           objDisc.setDescricao(rs.getString("descricao"));
+           objDisc.setValor(rs.getFloat("valor"));
+           
+           
+           
+       }
+       return objDisc;
+   }
+   
+   
+   public boolean Editar(DisciplinasBEAN objDisc) throws Exception{
+       con = new ConnectionFactory();
+       String SQL = "update Disciplinas set iddisc = ?, idcurso = ?,  curso = ?, nome_disc = ? , requisitos = ? , descricao = ? , valor = ?";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setInt(1, objDisc.getIddisc());
+       ps.setInt(2, objDisc.getIdcurso()); 
+       ps.setString(3, objDisc.getCurso());
+       ps.setString(4, objDisc.getNome_disc());
+       ps.setString(5, objDisc.getRequisitos());
+       ps.setString(6, objDisc.getDescricao());
+       ps.setFloat(7, objDisc.getValor());
+       
+       if(ps.executeUpdate()>0)
+           return true;
+           else
+           return false;
+   }
+   public boolean Excluir(int id_disc)throws Exception{
+       con = new ConnectionFactory();
+       String SQL = "delete from Disciplinas where iddisc = ?";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setInt(1, id_disc);
+       if(ps.executeUpdate()>0)
+           return true;
+           else
+           return false;
+   
+
+   }
+   public List<DisciplinasBEAN> read(){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        ResultSet rs = null;
+        
+        List<DisciplinasBEAN> disciplinas = new ArrayList<DisciplinasBEAN>();
+        
+        try {
+            stnt = con.prepareStatement("select*from Disciplinas");
+            rs = stnt.executeQuery();
+            
+            while(rs.next()){
+                
+               DisciplinasBEAN disciplina = new DisciplinasBEAN();
+                
+                disciplina.setIddisc(rs.getInt("iddisc"));
+                disciplina.setIdcurso(rs.getInt("idcurso"));
+                disciplina.setCurso(rs.getString("curso"));
+                disciplina.setNome_disc(rs.getString("nome_disc"));
+                disciplina.setRequisitos(rs.getString("requisitos"));
+                disciplina.setDescricao(rs.getString("descricao"));
+                disciplina.setValor(rs.getFloat("valor"));
+               
+                disciplinas.add(disciplina);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stnt, rs);
+        }
+        
+        return disciplinas;
+    }
+   
+   public List<DisciplinasBEAN> readBuscar(String nome){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        ResultSet rs = null;
+        
+        List<DisciplinasBEAN> disciplinas = new ArrayList<DisciplinasBEAN>();
+        
+        try {
+            stnt = con.prepareStatement("select*from Disciplinas where nome_disc LIKE %nome_disc%?");
+            stnt.setString(1,"%"+nome+"%");
+            rs = stnt.executeQuery();
+            
+            while(rs.next()){
+                
+                DisciplinasBEAN disciplina = new DisciplinasBEAN();
+                
+                disciplina.setIddisc(rs.getInt("iddisc"));
+                disciplina.setIdcurso(rs.getInt("idcurso"));
+                disciplina.setCurso(rs.getString("curso"));
+                disciplina.setNome_disc(rs.getString("nome_disc"));
+                disciplina.setRequisitos(rs.getString("requisitos"));
+                disciplina.setDescricao(rs.getString("descricao"));
+                disciplina.setValor(rs.getFloat("valor"));
+                
+                
+                disciplinas.add(disciplina);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stnt, rs);
+        }
+        
+        return disciplinas;
+    }
+   
+}
+
+
+package model.dao;
+
+import connection.ConnectionFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import model.Bean.TurmaBEAN;
+
+public class TurmaDAO {
+    ConnectionFactory con;
+    public boolean create(TurmaBEAN a)throws Exception{
+        
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        
+        try {
+            stnt = con.prepareStatement("INSERT INTO Turmas VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            stnt.setInt(1,a.getIdturma());
+            stnt.setInt(2,a.getIdmatricula());
+            stnt.setString(3,a.getData_matricula());
+            stnt.setInt(4,a.getIdaluno());
+            stnt.setString(5,a.getNome_aluno());
+            stnt.setInt(6,a.getIdcurso());
+            stnt.setString(7,a.getNome_curso());
+            stnt.setInt(8,a.getIddisc1());
+            stnt.setInt(9,a.getIddisc2());
+            stnt.setInt(10,a.getIddisc3());
+            stnt.setInt(11,a.getIddisc4());
+            stnt.setInt(12,a.getIddisc5());
+            stnt.setString(13,a.getDisciplina1());
+            stnt.setString(14,a.getDisciplina2());
+            stnt.setString(15,a.getDisciplina3());
+            stnt.setString(16,a.getDisciplina4());
+            stnt.setString(17,a.getDisciplina5());
+            stnt.setString(18,a.getHorarios());
+            stnt.setInt(19,a.getLimitevagas());
+            
+            stnt.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null,"Salvo com sucesso!");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Erro ao Salvar!"+ex);
+        }finally{
+        ConnectionFactory.closeConnection(con,stnt);
+    }
+        if(stnt.executeUpdate()>0)
+           return true;
+           else
+           return false;
+    }
+    
+     public TurmaBEAN Pesquisar(String nome) throws Exception{
+       con = new ConnectionFactory();
+       
+       TurmaBEAN objturma = null;
+       String SQL = "select * from Turmas where nome LIKE %idturma%";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setString(1,"%"+nome+"%");
+       ResultSet rs = ps.executeQuery();
+       while(rs.next()){
+           
+           objturma = new TurmaBEAN();
+           
+           objturma.setIdturma(rs.getInt("idturma"));
+           objturma.setIdmatricula(rs.getInt("idmatricula"));
+           objturma.setIdaluno(rs.getInt("idaluno"));
+           objturma.setNome_aluno(rs.getString("nome_aluno"));
+           objturma.setIdcurso(rs.getInt("idcurso"));
+           objturma.setNome_curso(rs.getString("nome_curso"));
+           objturma.setIddisc1(rs.getInt("iddisc1"));
+           objturma.setIddisc2(rs.getInt("iddisc2"));
+           objturma.setIddisc3(rs.getInt("iddisc3"));
+           objturma.setIddisc4(rs.getInt("iddisc4"));
+           objturma.setIddisc5(rs.getInt("iddisc5"));
+           objturma.setDisciplina1(rs.getString("disciplina1"));
+           objturma.setDisciplina2(rs.getString("disciplina2"));
+           objturma.setDisciplina3(rs.getString("disciplina3"));
+           objturma.setDisciplina4(rs.getString("disciplina4"));
+           objturma.setDisciplina5(rs.getString("disciplina5"));
+           objturma.setHorarios(rs.getString("horarios"));
+           objturma.setLimitevagas(rs.getInt("limitevagas"));
+       }
+       return objturma;
+   }
+   
+   
+   public boolean Editar(TurmaBEAN objturma) throws Exception{
+       con = new ConnectionFactory();
+       String SQL = "update Turmas set idturma = ?, idmatricula = ?,  data_matricula = ?, idaluno = ?, nome_aluno = ?, idcurso = ?, nome_curso = ?, iddisc1 = ?, iddisc2 = ?, iddisc3 = ?, iddisc4 = ?, iddisc5 = ?, Disciplina1 = ?, Disciplina2 = ?, Disciplina3 = ?, Disciplina4 = ?, Disciplina5 = ?, horarios = ?, limitevagas = ?";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       
+       ps.setInt(1, objturma.getIdturma());
+       ps.setInt(2, objturma.getIdmatricula()); 
+       ps.setString(3, objturma.getData_matricula());
+       ps.setInt(4,objturma.getIdaluno());
+       ps.setString(5,objturma.getNome_aluno());
+       ps.setInt(6,objturma.getIdcurso());
+       ps.setString(7,objturma.getNome_curso());
+       ps.setInt(8,objturma.getIddisc1());
+       ps.setInt(9,objturma.getIddisc2());
+       ps.setInt(10,objturma.getIddisc3());
+       ps.setInt(11,objturma.getIddisc4());
+       ps.setInt(12,objturma.getIddisc5());
+       ps.setString(13,objturma.getDisciplina1());
+       ps.setString(14,objturma.getDisciplina2());
+       ps.setString(15,objturma.getDisciplina3());
+       ps.setString(16,objturma.getDisciplina4());
+       ps.setString(17,objturma.getDisciplina5());
+       ps.setString(18,objturma.getHorarios());
+       ps.setInt(19,objturma.getLimitevagas());
+       
+       if(ps.executeUpdate()>0)
+           return true;
+           else
+           return false;
+   }
+   public boolean Excluir(int id_turma)throws Exception{
+       con = new ConnectionFactory();
+       String SQL = "delete from Turmas where idturma = ?";
+       PreparedStatement ps = con.getConnection().prepareStatement(SQL);
+       ps.setInt(1, id_turma);
+       if(ps.executeUpdate()>0)
+           return true;
+           else
+           return false;
+   
+
+   }
+   public List<TurmaBEAN> read(){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        ResultSet rs = null;
+        
+        List<TurmaBEAN> turmas = new ArrayList<TurmaBEAN>();
+        
+        try {
+            stnt = con.prepareStatement("select*from Turmas");
+            rs = stnt.executeQuery();
+            
+            while(rs.next()){
+                
+               TurmaBEAN turma = new TurmaBEAN();
+             
+           turma.setIdturma(rs.getInt("idturma"));
+           turma.setIdmatricula(rs.getInt("idmatricula"));
+           turma.setIdaluno(rs.getInt("idaluno"));
+           turma.setNome_aluno(rs.getString("nome_aluno"));
+           turma.setIdcurso(rs.getInt("idcurso"));
+           turma.setNome_curso(rs.getString("nome_curso"));
+           turma.setIddisc1(rs.getInt("iddisc1"));
+           turma.setIddisc2(rs.getInt("iddisc2"));
+           turma.setIddisc3(rs.getInt("iddisc3"));
+           turma.setIddisc4(rs.getInt("iddisc4"));
+           turma.setIddisc5(rs.getInt("iddisc5"));
+           turma.setDisciplina1(rs.getString("disciplina1"));
+           turma.setDisciplina2(rs.getString("disciplina2"));
+           turma.setDisciplina3(rs.getString("disciplina3"));
+           turma.setDisciplina4(rs.getString("disciplina4"));
+           turma.setDisciplina5(rs.getString("disciplina5"));
+           turma.setHorarios(rs.getString("horarios"));
+           turma.setLimitevagas(rs.getInt("limitevagas"));
+           
+                
+                
+                turmas.add(turma);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stnt, rs);
+        }
+        
+        return turmas;
+    }
+   
+   public List<TurmaBEAN> readBuscar(String nome){
+        Connection con = ConnectionFactory.getConnection();
+        PreparedStatement stnt = null;
+        ResultSet rs = null;
+        
+        List<TurmaBEAN> turmas = new ArrayList<TurmaBEAN>();
+        
+        try {
+            stnt = con.prepareStatement("select*from Turmas where idturma LIKE ?");
+            stnt.setString(1,"%"+nome+"%");
+            rs = stnt.executeQuery();
+            
+            while(rs.next()){
+                
+                TurmaBEAN turma = new TurmaBEAN();
+                
+           turma.setIdturma(rs.getInt("idturma"));
+           turma.setIdmatricula(rs.getInt("idmatricula"));
+           turma.setIdaluno(rs.getInt("idaluno"));
+           turma.setNome_aluno(rs.getString("nome_aluno"));
+           turma.setIdcurso(rs.getInt("idcurso"));
+           turma.setNome_curso(rs.getString("nome_curso"));
+           turma.setIddisc1(rs.getInt("iddisc1"));
+           turma.setIddisc2(rs.getInt("iddisc2"));
+           turma.setIddisc3(rs.getInt("iddisc3"));
+           turma.setIddisc4(rs.getInt("iddisc4"));
+           turma.setIddisc5(rs.getInt("iddisc5"));
+           turma.setDisciplina1(rs.getString("disciplina1"));
+           turma.setDisciplina2(rs.getString("disciplina2"));
+           turma.setDisciplina3(rs.getString("disciplina3"));
+           turma.setDisciplina4(rs.getString("disciplina4"));
+           turma.setDisciplina5(rs.getString("disciplina5"));
+           turma.setHorarios(rs.getString("horarios"));
+           turma.setLimitevagas(rs.getInt("limitevagas"));
+                
+                
+                turmas.add(turma);
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConnectionFactory.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            ConnectionFactory.closeConnection(con, stnt, rs);
+        }
+        
+        return turmas;
+    }
+   
+}
